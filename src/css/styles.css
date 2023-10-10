@@ -1,0 +1,118 @@
+body {
+    font-family: 'Lato', sans-serif;
+    background-color: #fafafa;
+    color: #212121;
+    font-size: 18px;
+  }
+  
+  .container {
+    background: #3d3c3c;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 60px;
+  }
+  
+  .search-form {
+    position: relative;
+    width: 450px;
+  }
+  
+  .input {
+    height: 45px;
+    outline: 0;
+    width: 450px;
+    background: #fff;
+    padding: 0 1.6rem;
+    border-radius: 0.7rem;
+    appearance: none;
+    transition: all 0.3s cubic-bezier(0, 0, 0.43, 1.49);
+    z-index: 1;
+    position: relative;
+    border: 0;
+    font-size: 24px;
+    font-family: inherit;
+  }
+  
+  .input:not(:placeholder-shown) {
+    border-radius: 11px 0 0 11px;
+    width: calc(100% - 150px);
+  }
+  
+  .button {
+    display: block;
+    position: absolute;
+    border: 0;
+    top: 0;
+    right: 0;
+    width: 150px;
+    height: 45px;
+    font-size: 20px;
+    background: #57bd84;
+    border-radius: 0 11px 11px 0;
+    cursor: pointer;
+  }
+  
+  .load-more {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    cursor: pointer;
+    width: 150px;
+    height: 50px;
+    font-size: 16px;
+    background-color: #3d3c3c;
+    color: #fff;
+    border: 0;
+    border-radius: 11px;
+  }
+  
+  .load-more:hover,
+  .load-more:focus {
+    background-color: #57bd84;
+  }
+  
+  .is-hidden {
+    display: none;
+  }
+  
+  .gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    grid-gap: 20px;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    max-width: calc(100vw - 80px);
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 30px;
+    margin-top: 50px;
+  }
+  
+  img {
+    display: block;
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+  }
+  
+  a {
+    text-decoration: none;
+    color: #2a2a2a;
+  }
+  
+  .info {
+    display: flex;
+    text-align: center;
+    justify-content: space-around;
+  }
+  
+  .info-item {
+    font-size: 14px;
+  }
+  
+  span {
+    font-weight: normal;
+    margin-right: 3px;
+  }
