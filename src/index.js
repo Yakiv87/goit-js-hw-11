@@ -1,54 +1,8 @@
 import './css/styles.css';
-import 'simplelightbox/dist/simple-lightbox.min.css';
 import Notiflix from 'notiflix';
 import SimpleLightbox from 'simplelightbox';
-import axios from 'axios';
-
-export default class ImageApi {
-  constructor() {
-    this.searchQuery = '';
-    this.page = 1;
-    this.viewedHits = 0;
-    this.totalHits = 0;
-  }
-
-  async fetchImages() {
-    const KEY = '39947445-b137d581fb2e8c7b497617e38';
-    const response = await axios.get(
-      `https://pixabay.com/api/?key=${KEY}&q=${this.searchQuery}&image_type=photo&orientation=horizontal&safesearch=true&per_page=40&page=${this.page}`
-    );
-
-    this.incrementPage();
-    this.hitsCounter(response);
-    this.totalHits = response.data.totalHits;
-
-    return response.data;
-  }
-
-  incrementPage() {
-    this.page += 1;
-  }
-
-  resetPage() {
-    this.page = 1;
-  }
-
-  hitsCounter(response) {
-    this.viewedHits += response.data.hits.length;
-  }
-
-  resethitsCounter() {
-    this.viewedHits = 0;
-  }
-
-  get query() {
-    return this.searchQuery;
-  }
-
-  set query(newQuery) {
-    this.searchQuery = newQuery;
-  }
-}
+import 'simplelightbox/dist/simple-lightbox.min.css';
+import ImageApi from './axiosImage'
 
 const searchForm = document.getElementById('search-form');
 const gallery = document.querySelector('.gallery');
@@ -64,7 +18,13 @@ loadMoreButton.classList.add('is-hidden');
 async function onSearch(event) {
   event.preventDefault();
   clearGallery();
+  
+  const searchQuery = event.currentTarget.elements.searchQuery.value.trim();
 
+  if (!searchQuery) {
+    return;
+  }
+  
   imageApi.query = event.currentTarget.elements.searchQuery.value;
   imageApi.resetPage();
   imageApi.resethitsCounter();
@@ -115,7 +75,14 @@ async function onLoadMore() {
 
   autoScroll();
 }
+class ImageApi {
+  
+  totalPages = 0;
 
+  calculateTotalPages(totalHits) {
+    this.totalPages = Math.ceil(totalHits / this.per_page); 
+  }
+}
 function createImageCard(imageCard) {
   const markupList = imageCard
     .map(
@@ -152,7 +119,8 @@ function createImageCard(imageCard) {
     .join('');
 
   gallery.insertAdjacentHTML('beforeend', markupList);
-  const lightbox = new SimpleLightbox('.gallery a');
+  const lightbox = new SimpleLightbox('.gallery a', {
+    captionData: 'alt',});
 }
 
 function clearGallery() {
