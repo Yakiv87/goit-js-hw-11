@@ -65,14 +65,16 @@ async function onSearch(event) {
 
 async function onLoadMore() {
   const imgResponse = await imageApi.fetchImages();
-  if (imageApi.viewedHits === imageApi.totalHits) {
+  if (imgResponse.hits.length === 0) {
     Notiflix.Notify.info(
       "We're sorry, but you've reached the end of search results."
     );
     loadMoreButton.classList.add('is-hidden');
-  }
+    imageApi.page = imageApi.totalPages;
+  } else {
   createImageCard(imgResponse.hits);
-
+}
+  imageApi.viewedHits += imgResponse.hits.length;
   autoScroll();
 }
 class ImageApi {
