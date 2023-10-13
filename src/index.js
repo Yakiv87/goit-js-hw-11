@@ -1,6 +1,6 @@
 import './css/styles.css';
 import Notiflix from 'notiflix';
-import SimpleLightbox from 'simplelightbox';
+import SimpleLightbox from 'simplelightbox'
 import 'simplelightbox/dist/simple-lightbox.min.css';
 import ImageApi from './axiosImage'
 
@@ -20,7 +20,7 @@ async function onSearch(event) {
   clearGallery();
   
   const searchQuery = event.currentTarget.elements.searchQuery.value.trim();
-
+  
   if (!searchQuery) {
     return;
   }
@@ -34,6 +34,7 @@ async function onSearch(event) {
   }
 
   const imgResponse = await imageApi.fetchImages();
+  imageApi.calculateTotalPages(imgResponse.totalHits);
   try {
     if (imgResponse.totalHits === 0) {
       Notiflix.Notify.failure(
@@ -58,13 +59,30 @@ async function onSearch(event) {
       );
       loadMoreButton.classList.add('is-hidden');
     }
-  } catch (error) {
+      } catch (error) {
     console.log(error.message);
   }
 }
 
 async function onLoadMore() {
   const imgResponse = await imageApi.fetchImages();
+  imageApi.calculateTotalPages(imgResponse.totalHits);
+  
+  if (
+      imageApi.page >= imageApi.totalPages) 
+      {
+      Notiflix.Notify.info(
+        "We're sorry, but you've reached the end of search results."
+      );
+      loadMoreButton.classList.add('is-hidden');
+      
+    } 
+    else {
+      createImageCard(imgResponse.hits);
+      imageApi.viewedHits += imgResponse.hits.length;
+    }
+   
+  
   if (imgResponse.hits.length === 0) {
     Notiflix.Notify.info(
       "We're sorry, but you've reached the end of search results."
@@ -73,17 +91,10 @@ async function onLoadMore() {
     imageApi.page = imageApi.totalPages;
   } else {
   createImageCard(imgResponse.hits);
-}
   imageApi.viewedHits += imgResponse.hits.length;
-  autoScroll();
 }
-class ImageApi {
   
-  totalPages = 0;
-
-  calculateTotalPages(totalHits) {
-    this.totalPages = Math.ceil(totalHits / this.per_page); 
-  }
+  autoScroll();
 }
 function createImageCard(imageCard) {
   const markupList = imageCard
@@ -121,7 +132,7 @@ function createImageCard(imageCard) {
     .join('');
 
   gallery.insertAdjacentHTML('beforeend', markupList);
-  const lightbox = new SimpleLightbox('.gallery a', {
+  const Lightbox = new SimpleLightbox('.gallery a', {
     captionData: 'alt',});
 }
 
