@@ -9,7 +9,8 @@ const gallery = document.querySelector('.gallery');
 const loadMoreButton = document.querySelector('.load-more');
 
 const imageApi = new ImageApi();
-
+const lightbox = new SimpleLightbox('.gallery a', {
+  captionsData: 'alt',});
 searchForm.addEventListener('submit', onSearch);
 loadMoreButton.addEventListener('click', onLoadMore);
 
