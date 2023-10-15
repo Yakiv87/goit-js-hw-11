@@ -133,7 +133,7 @@ function createImageCard(imageCard) {
 
   gallery.insertAdjacentHTML('beforeend', markupList);
   const Lightbox = new SimpleLightbox('.gallery a', {
-    captionData: 'alt',});
+    captionsData: 'alt',});
 }
 
 function clearGallery() {
