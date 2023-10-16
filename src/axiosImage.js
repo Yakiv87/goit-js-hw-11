@@ -5,8 +5,8 @@ export default class ImageApi {
     this.searchQuery = '';
     this.page = 1; 
     this.per_page = 40;
-    this.totalPages = 0; 
-  }
+    this.totalPages = 0;
+      }
 
   async fetchImages() {
     const KEY = '39947445-b137d581fb2e8c7b497617e38';
