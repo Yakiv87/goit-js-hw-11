@@ -41,28 +41,21 @@ async function onSearch(event) {
       );
       loadMoreButton.classList.add('is-hidden');
     }
-    if (imgResponse.totalHits > 0) {
+    if(imgResponse.totalHits > 0) {
       Notiflix.Notify.success(
         `Hooray! We found ${imgResponse.totalHits} images!`
       );
-
+      imageApi.calculateTotalPages(imgResponse.totalHits); 
+  
       loadMoreButton.classList.remove('is-hidden');
       createImageCard(imgResponse.hits);
+  
       lightbox.refresh();
     }
   } catch (error) {
     console.log(error.message);
   }
-  if (
-    (imageApi.viewedHits === imageApi.totalHits) &
-    (imgResponse.totalHits !== 0)
-  ) {
-    Notiflix.Notify.info(
-      "We're sorry, but you've reached the end of search results."
-    );
-    loadMoreButton.classList.add('is-hidden');
   }
-}
 
 //************Function createImageCard****************/////
 
@@ -104,21 +97,23 @@ function createImageCard(imageCard) {
   gallery.insertAdjacentHTML('beforeend', markupList);
 }
 
+// ************Function onLoadMore****************/////
+
 async function onLoadMore() {
-  imageApi.page =+1;
-  const imgResponse = await imageApi.fetchImages();
-  imageApi.totalPages = Math.ceil(totalHits/this.per_page);
+  try {
+    imageApi.page += 1;
 
-  if (imageApi.page >= imageApi.totalPages) {
-    loadMoreButton.classList.add('is-hidden');
+    imgResponse = await imageApi.fetchImages();
+
+    imageApi.totalPages = Math.ceil(imgResponse.totalHits / imageApi.per_page);
+
+    if (imageApi.page > imageApi.totalPages) {
+      loadMoreButton.classList.add('is-hidden');
+      return;
+    }
+  } catch (error) {
+    console.log(error);
     return;
-  }
-
-  if (imageApi.viewedHits === imageApi.totalHits) {
-    Notiflix.Notify.info(
-      "We're sorry, but you've reached the end of search results."
-    );
-    loadMoreButton.classList.add('is-hidden');
   }
 
   createImageCard(imgResponse.hits);
@@ -126,39 +121,6 @@ async function onLoadMore() {
 
   autoScroll();
 }
-
-//************Function onLoadMore****************/////
-// async function onLoadMore() {
-//   imageApi.page += 1;
-
-// const imgResponse = await imageApi.fetchImages();
-
-// imageApi.totalPages = Math.ceil(imgResponse.totalHits / per_page); 
-
-// if(imageApi.page > imageApi.totalPages) {
-//   return;
-// }
-//   createImageCard(imgResponse.hits);
-//   lightbox.refresh();
-// loadMoreButton.classList.add('is-hidden');
-// if (imageApi.page === imageApi.totalPages) { 
-//     loadMoreButton.classList.add('is-hidden');
-    
-// } else {
-    
-//     loadMoreButton.classList.remove('is-hidden');
-//     {
-//     Notiflix.Notify.info(
-//       "We're sorry, but you've reached the end of search results."
-//     );
-   
-//   }
-// }
-// autoScroll();
-//   } 
-
-  
-
 
 //************Function clearGallery****************/////
 
@@ -177,4 +139,4 @@ function autoScroll() {
     top: cardHeight * 2,
     behavior: 'smooth',
   });
-}
+};
