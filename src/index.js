@@ -100,6 +100,7 @@ function createImageCard(imageCard) {
 // ************Function onLoadMore****************/////
 
 async function onLoadMore() {
+  let imgResponse;
   try {
     imageApi.page += 1;
 
