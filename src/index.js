@@ -101,9 +101,7 @@ function createImageCard(imageCard) {
 
 async function onLoadMore() {
   
-    imageApi.page += 1;
-
-    const imgResponse = await imageApi.fetchImages();
+       const imgResponse = await imageApi.fetchImages();
 
     imageApi.totalPages = Math.ceil(imgResponse.totalHits / imageApi.per_page);
 
