@@ -100,11 +100,10 @@ function createImageCard(imageCard) {
 // ************Function onLoadMore****************/////
 
 async function onLoadMore() {
-  let imgResponse;
-  try {
+  
     imageApi.page += 1;
 
-    imgResponse = await imageApi.fetchImages();
+    const imgResponse = await imageApi.fetchImages();
 
     imageApi.totalPages = Math.ceil(imgResponse.totalHits / imageApi.per_page);
 
@@ -112,10 +111,7 @@ async function onLoadMore() {
       loadMoreButton.classList.add('is-hidden');
       return;
     }
-  } catch (error) {
-    console.log(error);
-    return;
-  }
+  
 
   createImageCard(imgResponse.hits);
   lightbox.refresh();
